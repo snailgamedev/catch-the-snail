@@ -2780,8 +2780,7 @@ function updateSnail(snail) {
       if (dist < 80) speed *= 1.5;
       // Very slow turning
       let diff = targetAngle - snail.angle;
-      while (diff > Math.PI) diff -= Math.PI * 2;
-      while (diff < -Math.PI) diff += Math.PI * 2;
+      diff = Math.atan2(Math.sin(diff), Math.cos(diff));  // constant-time angle normalize (was an unbounded while → froze over time)
       snail.angle += diff * 0.03; // Very slow turn rate
       snail.x += Math.cos(snail.angle) * speed;
       snail.y += Math.sin(snail.angle) * speed;
@@ -2983,8 +2982,7 @@ function updateSnail(snail) {
       if (snail.y < -20) snail.y = canvas.height - 30;
       if (snail.y > canvas.height + 20) snail.y = 30;
       let ad = targetAngle - snail.angle;
-      while (ad > Math.PI) ad -= Math.PI * 2;
-      while (ad < -Math.PI) ad += Math.PI * 2;
+      ad = Math.atan2(Math.sin(ad), Math.cos(ad));  // constant-time angle normalize (was an unbounded while → froze over time)
       snail.angle += ad * 0.15;
       addTrail(snail); return;
     }
@@ -3316,8 +3314,7 @@ function updateSnail(snail) {
 
   // Smooth angle transition
   let angleDiff = targetAngle - snail.angle;
-  while (angleDiff > Math.PI) angleDiff -= Math.PI * 2;
-  while (angleDiff < -Math.PI) angleDiff += Math.PI * 2;
+  angleDiff = Math.atan2(Math.sin(angleDiff), Math.cos(angleDiff));  // constant-time angle normalize (was an unbounded while → froze over time)
   snail.angle += angleDiff * 0.15;
 
   snail.x += Math.cos(snail.angle) * speed;
